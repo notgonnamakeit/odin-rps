@@ -1,6 +1,4 @@
 
-// Your game is going to play against the computer, so begin with a function called getComputerChoice that will randomly return either ‘Rock’, ‘Paper’ or ‘Scissors’. We’ll use this function in the game to make the computer’s play. Tip: use the console to make sure this is returning the expected output before moving to the next step!
-
 function getComputerChoice() {
     q=Math.floor(Math.random()*3)
 
@@ -18,12 +16,6 @@ function getComputerChoice() {
 
 console.log("Hello");
 
-// for(let i=0; i<100; i++) {
-//     console.log(getComputerChoice());
-// }
-
-// Write a function that plays a single round of Rock Paper Scissors. The function should take two parameters - the playerSelection and computerSelection - and then return a string that declares the winner of the round like so: "You Lose! Paper beats Rock"
-// Make your function’s playerSelection parameter case-insensitive (so users can input rock, ROCK, RocK or any other variation).
 
 function playRound(playerSelection, computerSelection) {
     if (playerSelection.toLowerCase()==computerSelection.toLowerCase()) return "Tie!";
@@ -43,18 +35,35 @@ function playRound(playerSelection, computerSelection) {
 }
 
 
-// Write a NEW function called game(). Use the previous function inside of this one to play a 5 round game that keeps score and reports a winner or loser at the end.
-//At this point you should be using console.log() to display the results of each round and the winner at the end.
-
-
-function play() {
-    let choice=prompt("Play RPS: (1) Rock, (2) Paper, (3) Scissors.");
+function play(choice) {
     console.log(`You chose: ${choice}`);
-    console.log(playRound(choice, getComputerChoice()));
+    let compChoice=getComputerChoice();
+    let result=playRound(choice, compChoice);
+    console.log(result);
+    let results=document.querySelector('div.results')
+    let newDiv=document.createElement('div');
+    newDiv.textContent=`You chose: ${choice}. Computer chose: ${compChoice}. ${result}`;
+    results.appendChild(newDiv);
+
+    if (result.includes('win')) resultPlayer++;
+    if (result.includes('lose')) resultComputer++;
+
+    if (resultPlayer===2 || resultComputer===2) {
+        newDiv=document.createElement('h2');
+        newDiv.textContent= (resultPlayer===5)?'You win the game!!!':'Computer wins the game!!!'
+        results.appendChild(newDiv);
+        resultPlayer = resultComputer = 0;
+        
+    }
+
 }
 
+let buttons=document.querySelectorAll('button');
 
-for (let i=0;i<3; i++) {
-    play();
-}
+buttons.forEach( button =>
+        button.addEventListener('click',() => play(button.name))
+);
+
+let resultPlayer = resultComputer = 0;
+
 
